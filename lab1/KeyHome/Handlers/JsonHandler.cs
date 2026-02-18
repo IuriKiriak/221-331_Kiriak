@@ -1,26 +1,23 @@
-using System.Collections.Generic;
-using System.IO;
-using System.Text.Json;
-using KeyHome.Models;
+using FileHandler;
+using Models;
 
-namespace KeyHome.Handlers
+namespace JsonHandler;
+
+// интерфейсы
+public interface ICredentialJsonHandler
 {
-    public class JsonHandler
+    IFileHandler File { get; set; }
+}
+
+public class CredentialJsonHandler : ICredentialJsonHandler
+{
+    public IFileHandler File { get; set;}
+    
+    public CredentialJsonHandler(string fullPath = "Data/credentials.json")
     {
-        private readonly string _filePath;
-
-        public JsonHandler(string filePath)
-        {
-            _filePath = filePath;
-        }
-
-        public List<Credential> LoadCredentials()
-        {
-            if (!File.Exists(_filePath))
-                return new List<Credential>();
-
-            string json = File.ReadAllText(_filePath);
-            return JsonSerializer.Deserialize<List<Credential>>(json) ?? new List<Credential>();
-        }
+        File = CredentialJsonFileHandler.getInstance(fullPath);
     }
+
+
+
 }
