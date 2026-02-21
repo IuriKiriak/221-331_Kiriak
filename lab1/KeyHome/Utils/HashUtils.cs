@@ -3,14 +3,9 @@ using System.Text;
 
 namespace HashUtils;
 
-public interface IHashSHA256
+public class HashSHA256
 {
-    byte[] CreateHash(string codeWord);
-}
-
-public class HashSHA256 : IHashSHA256
-{
-    public byte[] CreateHash(string codeWord) 
+    public static byte[] CreateHash(string codeWord) 
     {
         using var sha = SHA256.Create();
         return sha.ComputeHash(Encoding.UTF8.GetBytes(codeWord));
