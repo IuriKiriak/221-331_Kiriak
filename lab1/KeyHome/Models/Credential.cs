@@ -4,6 +4,9 @@ namespace KeyHome.Models
 {
     public class Credential
     {
+        [JsonPropertyName("id")]
+        public int Id { get; set; }
+
         [JsonPropertyName("url")]
         public string Url { get; set; } = string.Empty;
 

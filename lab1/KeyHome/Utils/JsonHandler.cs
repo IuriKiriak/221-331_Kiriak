@@ -31,8 +31,8 @@ public class CredentialJsonHandler : ICredentialJsonHandler
 
 public abstract class BaseParcerLogPas : IParcerLogPas
 {
-    public string Login { get; set; }
-    public string Password { get; set; }
+    public string Login { get; set; } = string.Empty;
+    public string Password { get; set; } = string.Empty;
 
     protected BaseParcerLogPas() {} // по идеи отправляем сюда модель json
 
@@ -41,9 +41,6 @@ public abstract class BaseParcerLogPas : IParcerLogPas
 
 public abstract class ParcerLogPas : BaseParcerLogPas
 {
-    public string Login { get; set; }
-    public string Password { get; set; }
-
     private ParcerLogPas() : base() {} // по идеи отправляем сюда модель json
 
     public override Dictionary<string, string> ParsingLogPas()

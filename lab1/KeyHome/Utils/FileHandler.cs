@@ -68,8 +68,8 @@ public abstract class BaseFileWritter : IFileWritter
 // работа с файлом 
 public class CredentialJsonFileHandler : BaseFileHandler
 {
-    private static CredentialJsonFileHandler instance_;
-    private static object syncBoot_ = new object();
+    private static CredentialJsonFileHandler? _instance = null!;
+    private static object _syncBoot = new object();
 
     private CredentialJsonFileHandler(string fullPath) : base(fullPath,new FileReader(fullPath), new FileWritter(fullPath))
     {
@@ -78,17 +78,17 @@ public class CredentialJsonFileHandler : BaseFileHandler
 
     public static CredentialJsonFileHandler getInstance(string fullPath)
     {
-        if (instance_ == null)
+        if (_instance == null)
         {
-            lock (syncBoot_)
+            lock (_syncBoot)
             {
-                if (instance_ == null)
+                if (_instance == null)
                 {
-                    instance_ = new CredentialJsonFileHandler(fullPath);
+                    _instance = new CredentialJsonFileHandler(fullPath);
                 }
             }
         }
-        return instance_;
+        return _instance;
     }
 
     public override void FileInfo()

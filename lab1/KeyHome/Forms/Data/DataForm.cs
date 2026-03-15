@@ -1,36 +1,43 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Windows.Forms;
-
-using Models;
-using JsonHandler;
+using KeyHome.Models;
 
 namespace KeyHome.Forms
 {
     public partial class DataForm : Form
     {
-        // private List<Credential> _credentials = new List<Credential>();
-        private string decriptedText_;
-        public DataForm(string decriptedText)
+        private string decryptedText_;
+
+        public DataForm(string decryptedText)
         {
             InitializeComponent();
+            decryptedText_ = decryptedText;
+            Console.WriteLine($"Расшифрованные данные: {decryptedText}");
+
             LoadData();
-            decriptedText_ = decriptedText;
-            Console.WriteLine($"расшифрованные данные: {decriptedText}");
         }
 
         private void LoadData()
         {
-            // Загружаем JSON
-            string jsonPath = Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "Data", "credentials.json");
-            // var handler = new JsonHandler(jsonPath);
-            // _credentials = handler.LoadCredentials();
+            try
+            {
+                var credentialList = JsonSerializer.Deserialize<CredentialList>(decryptedText_);
 
-            // Устанавливаем источник данных для таблицы
-            // dataGridView1.DataSource = _credentials;
-
-            // Маскировка пароля — этот код нужно добавить **после** dataGridView1.DataSource
+                if (credentialList != null)
+                {
+                    dataGridView1.DataSource = credentialList.Credentials;
+                }
+                else
+                {
+                    MessageBox.Show("Не удалось десериализовать данные.");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка при десериализации данных: " + ex.Message);
+            }
         }
-
     }
 }

@@ -1,12 +1,11 @@
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace Models;
-
-// сериализатор JSON 
-public class Credentials
+namespace KeyHome.Models
 {
-    int Id { get; set; }
-    string Url {get; set; }
-    string Login { get; set; }
-    string Password { get; set; }
+    public class CredentialList
+    {
+        [JsonPropertyName("credentials")]
+        public List<Credential> Credentials { get; set; } = new List<Credential>();
+    }
 }
