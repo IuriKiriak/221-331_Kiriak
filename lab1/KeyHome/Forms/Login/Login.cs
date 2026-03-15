@@ -36,7 +36,7 @@ public class LoginForm : Form
         this.Controls.Add(submitButton);
     }
 
-    private void submitButtonClick_(object sender, EventArgs e)
+    private void submitButtonClick_(object? sender, EventArgs e)
     {
         string codeWord = codeTextBox.Text;
 

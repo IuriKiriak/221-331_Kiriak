@@ -4,7 +4,7 @@ namespace KeyHome.Forms
 {
     partial class DataForm
     {
-        private System.ComponentModel.IContainer components = null;
+        // private System.ComponentModel.IContainer components = null;
         private System.Windows.Forms.DataGridView dataGridView1;
 
         private void InitializeComponent()
