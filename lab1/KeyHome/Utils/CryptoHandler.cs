@@ -6,9 +6,6 @@ namespace CryptoHandler
 {
     public static class CryptAES256OpenSSL
     {
-        // =============================
-        // OpenSSL P/Invoke
-        // =============================
         [DllImport("libcrypto-3-x64.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr EVP_CIPHER_CTX_new();
 
@@ -39,16 +36,12 @@ namespace CryptoHandler
         [DllImport("libcrypto-3-x64.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern int EVP_CIPHER_CTX_set_padding(IntPtr ctx, int pad);
 
-        // =============================
-        // Шифрование
-        // =============================
         public static byte[] Encrypt(byte[] plaintext, byte[] key, out byte[] iv)
         {
             if (key.Length != 32) throw new ArgumentException("Ключ должен быть 32 байта");
 
-            iv = new byte[16];
-            using var rng = new RNGCryptoServiceProvider();
-            rng.GetBytes(iv);
+            // Устанавливаем iv как массив из 16 нулевых байтов
+            iv = new byte[16];  // Массив из 16 нулевых байтов
 
             IntPtr ctx = EVP_CIPHER_CTX_new();
             if (ctx == IntPtr.Zero) throw new Exception("Не удалось создать контекст OpenSSL");
@@ -59,9 +52,9 @@ namespace CryptoHandler
                 if (EVP_EncryptInit_ex(ctx, cipher, IntPtr.Zero, key, iv) != 1)
                     throw new Exception("Ошибка EVP_EncryptInit_ex");
 
-                EVP_CIPHER_CTX_set_padding(ctx, 1); // PKCS7
+                EVP_CIPHER_CTX_set_padding(ctx, 1);
 
-                byte[] outBuf = new byte[plaintext.Length + 16]; // запас на padding
+                byte[] outBuf = new byte[plaintext.Length + 16];
                 int outLen = 0;
 
                 if (EVP_EncryptUpdate(ctx, outBuf, ref outLen, plaintext, plaintext.Length) != 1)
@@ -69,9 +62,8 @@ namespace CryptoHandler
 
                 int totalLen = outLen;
 
-                // Передаем буфер с позиции totalLen для Final
                 int finalLen = 0;
-                byte[] finalBuf = new byte[16]; // Final максимум 16 байт для AES-256-CBC
+                byte[] finalBuf = new byte[16];
                 if (EVP_EncryptFinal_ex(ctx, finalBuf, ref finalLen) != 1)
                     throw new Exception("Ошибка EVP_EncryptFinal_ex");
 
@@ -89,9 +81,6 @@ namespace CryptoHandler
             }
         }
 
-        // =============================
-        // Дешифрование
-        // =============================
         public static byte[] Decrypt(byte[] ciphertext, byte[] key, byte[] iv)
         {
             if (key.Length != 32) throw new ArgumentException("Ключ должен быть 32 байта");
@@ -106,9 +95,9 @@ namespace CryptoHandler
                 if (EVP_DecryptInit_ex(ctx, cipher, IntPtr.Zero, key, iv) != 1)
                     throw new Exception("Ошибка EVP_DecryptInit_ex");
 
-                EVP_CIPHER_CTX_set_padding(ctx, 1); // PKCS7
+                EVP_CIPHER_CTX_set_padding(ctx, 1);
 
-                byte[] outBuf = new byte[ciphertext.Length]; // буфер
+                byte[] outBuf = new byte[ciphertext.Length];
                 int outLen = 0;
 
                 if (EVP_DecryptUpdate(ctx, outBuf, ref outLen, ciphertext, ciphertext.Length) != 1)
@@ -116,7 +105,6 @@ namespace CryptoHandler
 
                 int totalLen = outLen;
 
-                // Буфер для Final
                 int finalLen = 0;
                 byte[] finalBuf = new byte[16];
                 if (EVP_DecryptFinal_ex(ctx, finalBuf, ref finalLen) != 1)

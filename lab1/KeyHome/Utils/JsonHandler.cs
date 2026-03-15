@@ -1,5 +1,5 @@
 using FileHandler;
-using Models;
+using System.IO;
 
 namespace JsonHandler;
 
@@ -21,10 +21,11 @@ public interface IParcerLogPas
 public class CredentialJsonHandler : ICredentialJsonHandler
 {
     public IFileHandler File { get; set;}
-    
-    public CredentialJsonHandler(string fullPath = "Data/credentials.json")
+
+    public CredentialJsonHandler()
     {
-        File = CredentialJsonFileHandler.getInstance(fullPath);
+        string filePath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "Сredentials.json");
+        File = CredentialJsonFileHandler.getInstance(filePath);
     }
 }
 

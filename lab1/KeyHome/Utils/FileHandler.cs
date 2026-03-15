@@ -101,7 +101,6 @@ public class CredentialJsonFileHandler : BaseFileHandler
 // классы чтения записи
 public class FileReader : BaseFileReader
 {
-    public string FullPath;
     public FileReader(string fullPath) : base(fullPath)
     {
         this.FullPath = fullPath;
@@ -115,8 +114,6 @@ public class FileReader : BaseFileReader
 
 public class FileWritter : BaseFileWritter
 {
-    public string FullPath = "";
-
     public FileWritter(string fullPath) : base(fullPath)
     {
         this.FullPath = fullPath;
