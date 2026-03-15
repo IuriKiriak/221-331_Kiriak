@@ -46,14 +46,11 @@ public class LoginForm : Form
         Console.WriteLine($"Зашифрованные данные из файла: {encryptedText}");
         Console.WriteLine("\n\n");
 
-        // Преобразуем строку Base64 обратно в байты
-        byte[] encryptedBytes = Convert.FromBase64String(encryptedText);
-        byte[] key = HashSHA256.CreateHash(codeWord);
-
         // Расшифровка данных
-        byte[] decrypted = CryptAES256OpenSSL.Decrypt(encryptedBytes, key);
+        byte[] decrypted = CryptAES256OpenSSL.Decrypt(encryptedText, codeWord);
 
         string decryptedText = Encoding.UTF8.GetString(decrypted);
+        Console.WriteLine($"Расшифрованные данные из файла: {decryptedText}");
         if (string.IsNullOrEmpty(codeWord))
         {
             MessageBox.Show("Введите кодовую фразу!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -61,7 +58,7 @@ public class LoginForm : Form
         else
         {
             MessageBox.Show($"Кодовая фраза: ", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            
+
             DataForm dataForm = new DataForm(decryptedText);
             dataForm.Show();
             this.Close();

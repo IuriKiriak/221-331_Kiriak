@@ -6,6 +6,6 @@ public partial class Form1 : Form
     {
         InitializeComponent();
         LoginForm loginForm = new LoginForm();
-        loginForm.Show();
+        loginForm.ShowDialog();
     }
 }

@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <None Include="Data\Сredentials.json">
-      <CopyToOutputDirectory>Copy</CopyToOutputDirectory>
+      <CopyToOutputDirectory>CopyСredentialsFile</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 

@@ -16,7 +16,7 @@ namespace KeyHome.Forms
             InitializeComponent();
             LoadData();
             decriptedText_ = decriptedText;
-            Console.WriteLine(decriptedText);
+            Console.WriteLine($"расшифрованные данные: {decriptedText}");
         }
 
         private void LoadData()

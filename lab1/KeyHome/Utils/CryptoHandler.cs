@@ -1,6 +1,8 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
+using System.Text;
+using HashUtils;
 
 namespace CryptoHandler
 {
@@ -38,8 +40,11 @@ namespace CryptoHandler
 
         private static byte[] iv = new byte[16];
 
-        public static byte[] Encrypt(byte[] plaintext, byte[] key)
+        public static byte[] Encrypt(string plainText, string codeWord)
         {
+            byte[] encryptedBytes = Encoding.UTF8.GetBytes(plainText);
+            byte[] key = HashSHA256.CreateHash(codeWord);
+
             IntPtr ctx = EVP_CIPHER_CTX_new();
             if (ctx == IntPtr.Zero) throw new Exception("Не удалось создать контекст OpenSSL");
 
@@ -51,10 +56,10 @@ namespace CryptoHandler
 
                 EVP_CIPHER_CTX_set_padding(ctx, 1);
 
-                byte[] outBuf = new byte[plaintext.Length + 16];
+                byte[] outBuf = new byte[encryptedBytes.Length + 16];
                 int outLen = 0;
 
-                if (EVP_EncryptUpdate(ctx, outBuf, ref outLen, plaintext, plaintext.Length) != 1)
+                if (EVP_EncryptUpdate(ctx, outBuf, ref outLen, encryptedBytes, encryptedBytes.Length) != 1)
                     throw new Exception("Ошибка EVP_EncryptUpdate");
 
                 int totalLen = outLen;
@@ -78,8 +83,11 @@ namespace CryptoHandler
             }
         }
 
-        public static byte[] Decrypt(byte[] ciphertext, byte[] key)
+        public static byte[] Decrypt(string cipherText, string codeWord)
         {
+            byte[] encryptedBytes = Convert.FromBase64String(cipherText);
+            byte[] key = HashSHA256.CreateHash(codeWord);
+
             IntPtr ctx = EVP_CIPHER_CTX_new();
             if (ctx == IntPtr.Zero) throw new Exception("Не удалось создать контекст OpenSSL");
 
@@ -91,10 +99,10 @@ namespace CryptoHandler
 
                 EVP_CIPHER_CTX_set_padding(ctx, 1);
 
-                byte[] outBuf = new byte[ciphertext.Length];
+                byte[] outBuf = new byte[encryptedBytes.Length];
                 int outLen = 0;
 
-                if (EVP_DecryptUpdate(ctx, outBuf, ref outLen, ciphertext, ciphertext.Length) != 1)
+                if (EVP_DecryptUpdate(ctx, outBuf, ref outLen, encryptedBytes, encryptedBytes.Length) != 1)
                     throw new Exception("Ошибка EVP_DecryptUpdate");
 
                 int totalLen = outLen;
@@ -107,10 +115,10 @@ namespace CryptoHandler
                 Array.Copy(finalBuf, 0, outBuf, totalLen, finalLen);
                 totalLen += finalLen;
 
-                byte[] plaintext = new byte[totalLen];
-                Array.Copy(outBuf, plaintext, totalLen);
+                byte[] plainText = new byte[totalLen];
+                Array.Copy(outBuf, plainText, totalLen);
 
-                return plaintext;
+                return plainText;
             }
             finally
             {

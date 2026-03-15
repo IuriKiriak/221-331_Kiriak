@@ -32,7 +32,8 @@ internal static class Program
 
         string text = file.FileReader.FileRead();
         Console.WriteLine($"{text}\n\n\n");
-        // TestCript.TestCript1();
+
+        // RevealPassword.RevealPassword1();
 
         Application.Run(new Form1());
     }
