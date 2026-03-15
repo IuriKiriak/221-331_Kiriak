@@ -5,6 +5,7 @@ using System.Text;
 using JsonHandler;
 using CryptoHandler;
 using HashUtils;
+using KeyHome.Forms;
 
 
 namespace KeyHome;
@@ -49,16 +50,10 @@ public class LoginForm : Form
         byte[] encryptedBytes = Convert.FromBase64String(encryptedText);
         byte[] key = HashSHA256.CreateHash(codeWord);
 
-        // Генерация IV (например, все нули)
-        byte[] iv = new byte[16];  // Массив из 16 нулевых байтов
-
-        Console.WriteLine("IV перед расшифровкой: " + BitConverter.ToString(iv));
-
         // Расшифровка данных
-        byte[] decrypted = CryptAES256OpenSSL.Decrypt(encryptedBytes, key, iv);
+        byte[] decrypted = CryptAES256OpenSSL.Decrypt(encryptedBytes, key);
 
         string decryptedText = Encoding.UTF8.GetString(decrypted);
-        Console.WriteLine("Расшифрованный текст: " + decryptedText);
         if (string.IsNullOrEmpty(codeWord))
         {
             MessageBox.Show("Введите кодовую фразу!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -66,7 +61,10 @@ public class LoginForm : Form
         else
         {
             MessageBox.Show($"Кодовая фраза: ", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
+            
+            DataForm dataForm = new DataForm(decryptedText);
+            dataForm.Show();
+            this.Close();
         }
     }
 }

@@ -10,11 +10,13 @@ namespace KeyHome.Forms
     public partial class DataForm : Form
     {
         // private List<Credential> _credentials = new List<Credential>();
-
-        public DataForm()
+        private string decriptedText_;
+        public DataForm(string decriptedText)
         {
             InitializeComponent();
             LoadData();
+            decriptedText_ = decriptedText;
+            Console.WriteLine(decriptedText);
         }
 
         private void LoadData()

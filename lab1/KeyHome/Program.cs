@@ -34,7 +34,7 @@ internal static class Program
         Console.WriteLine($"{text}\n\n\n");
         // TestCript.TestCript1();
 
-        Application.Run(new LoginForm());
+        Application.Run(new Form1());
     }
 }
 

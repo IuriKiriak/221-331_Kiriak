@@ -36,13 +36,10 @@ namespace CryptoHandler
         [DllImport("libcrypto-3-x64.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern int EVP_CIPHER_CTX_set_padding(IntPtr ctx, int pad);
 
-        public static byte[] Encrypt(byte[] plaintext, byte[] key, out byte[] iv)
+        private static byte[] iv = new byte[16];
+
+        public static byte[] Encrypt(byte[] plaintext, byte[] key)
         {
-            if (key.Length != 32) throw new ArgumentException("Ключ должен быть 32 байта");
-
-            // Устанавливаем iv как массив из 16 нулевых байтов
-            iv = new byte[16];  // Массив из 16 нулевых байтов
-
             IntPtr ctx = EVP_CIPHER_CTX_new();
             if (ctx == IntPtr.Zero) throw new Exception("Не удалось создать контекст OpenSSL");
 
@@ -81,11 +78,8 @@ namespace CryptoHandler
             }
         }
 
-        public static byte[] Decrypt(byte[] ciphertext, byte[] key, byte[] iv)
+        public static byte[] Decrypt(byte[] ciphertext, byte[] key)
         {
-            if (key.Length != 32) throw new ArgumentException("Ключ должен быть 32 байта");
-            if (iv.Length != 16) throw new ArgumentException("IV должен быть 16 байт");
-
             IntPtr ctx = EVP_CIPHER_CTX_new();
             if (ctx == IntPtr.Zero) throw new Exception("Не удалось создать контекст OpenSSL");
 

@@ -20,10 +20,7 @@ public static class RevealPassword
         byte[] originalBytes = Encoding.UTF8.GetBytes(text);
         byte[] key = HashSHA256.CreateHash(codeWord);
 
-
-        byte[] iv = new byte[16]; 
-
-        byte[] encrypted = CryptAES256OpenSSL.Encrypt(originalBytes, key, out iv);
+        byte[] encrypted = CryptAES256OpenSSL.Encrypt(originalBytes, key);
 
         string encryptedBase64 = Convert.ToBase64String(encrypted);
 
