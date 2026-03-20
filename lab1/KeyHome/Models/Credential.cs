@@ -15,5 +15,8 @@ namespace KeyHome.Models
 
         [JsonPropertyName("password")]
         public string Password { get; set; } = string.Empty;
+
+        public string LoginMasked => new string('*', 5);
+        public string PasswordMasked => new string('*', 5);
     }
 }

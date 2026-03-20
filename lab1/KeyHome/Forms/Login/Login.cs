@@ -18,17 +18,15 @@ public class LoginForm : Form
 
     public LoginForm()
     {
-        // базовые настройки формы
         this.Text = "Введите кодовую фразу для расшифрования файл";
         this.Size = new System.Drawing.Size(300, 200);
 
-        // настройки для ввода фразы
         codeTextBox = new TextBox();
         codeTextBox.Location = new System.Drawing.Point(50, 30);
         codeTextBox.Size = new System.Drawing.Size(200, 20);
+        codeTextBox.UseSystemPasswordChar = true;
         this.Controls.Add(codeTextBox);
 
-        // кнопка для подтверждения ввода
         submitButton = new Button();
         submitButton.Text = "Подтвердить";
         submitButton.Location = new System.Drawing.Point(100, 70);
@@ -39,29 +37,33 @@ public class LoginForm : Form
     private void submitButtonClick_(object? sender, EventArgs e)
     {
         string codeWord = codeTextBox.Text;
-
-        var fileHandler = new CredentialJsonHandler();
-        var fileCredential = fileHandler.File;
-        string encryptedText = fileCredential.FileReader.FileRead();
-        Console.WriteLine($"Зашифрованные данные из файла: {encryptedText}");
-        Console.WriteLine("\n\n");
-
-        // Расшифровка данных
-        byte[] decrypted = CryptAES256OpenSSL.Decrypt(encryptedText, codeWord);
-
-        string decryptedText = Encoding.UTF8.GetString(decrypted);
-        Console.WriteLine($"Расшифрованные данные из файла: {decryptedText}");
         if (string.IsNullOrEmpty(codeWord))
         {
             MessageBox.Show("Введите кодовую фразу!", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
-        else
+        var fileHandler = new CredentialJsonHandler();
+        var fileCredential = fileHandler.File;
+        string encryptedText = fileCredential.FileReader.FileRead();
+        byte[] decrypted = new byte[16];
+        try
         {
-            MessageBox.Show($"Кодовая фраза: ", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
+            decrypted = CryptAES256OpenSSL.Decrypt(encryptedText, codeWord);
+            string decryptedText = Encoding.UTF8.GetString(decrypted);
+            
+            
             DataForm dataForm = new DataForm(decryptedText);
+
+            dataForm.FormClosed += (s, e) =>
+            {
+              this.Show(); 
+            };
+
             dataForm.Show();
-            this.Close();
+            this.Hide();
+        }
+        catch
+        {
+            MessageBox.Show("Коддовая фраза введена неправильно!");
         }
     }
 }

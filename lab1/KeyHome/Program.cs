@@ -21,21 +21,15 @@ internal static class Program
     static void Main()
     {
         AllocConsole();
+        AntiDebug.CheckDebugger();
 
         Application.EnableVisualStyles();
         Application.SetCompatibleTextRenderingDefault(false);
         ApplicationConfiguration.Initialize();
-
-        var fileHandler = new CredentialJsonHandler();
-        var file = fileHandler.File;
-
-
-        string text = file.FileReader.FileRead();
-        Console.WriteLine($"{text}\n\n\n");
-
         // RevealPassword.RevealPassword1();
+        // ProtectCredentials.EncryptCredentialsInsideFile("рука");
 
-        Application.Run(new Form1());
+        Application.Run(new LoginForm());
     }
 }
 
