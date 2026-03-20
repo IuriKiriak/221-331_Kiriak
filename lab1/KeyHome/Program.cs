@@ -26,8 +26,8 @@ internal static class Program
         Application.EnableVisualStyles();
         Application.SetCompatibleTextRenderingDefault(false);
         ApplicationConfiguration.Initialize();
-        // RevealPassword.RevealPassword1();
-        // ProtectCredentials.EncryptCredentialsInsideFile("рука");
+        // RevealPassword.RevealPassword1("пароль");
+        // ProtectCredentials.EncryptCredentialsInsideFile("пароль");
 
         Application.Run(new LoginForm());
     }

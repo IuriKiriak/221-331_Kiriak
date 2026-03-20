@@ -9,11 +9,8 @@ namespace KeyHome;
 
 public static class RevealPassword
 {
-    public static void RevealPassword1()
+    public static void RevealPassword1(string codeWord)
     {
-        // тут зашифрование файла так что не юзаем
-        string codeWord = "рука";
-
         var fileHandler = new CredentialJsonHandler();
         var fileCredential = fileHandler.File;
         string text = fileCredential.FileReader.FileRead();
