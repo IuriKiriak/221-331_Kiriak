@@ -12,6 +12,7 @@ using FileHandler;
 
 namespace KeyHome;
 
+
 internal static class Program
 {
     [DllImport("kernel32.dll")]
@@ -20,9 +21,12 @@ internal static class Program
     [STAThread]
     static void Main()
     {
-        AllocConsole();
-        AntiDebug.CheckDebugger();
-
+        Guid g = Guid.NewGuid();
+        Console.WriteLine(g);
+        Console.WriteLine(Guid.NewGuid());
+        
+        // AllocConsole();
+        // AntiDebug.CheckDebugger();
         Application.EnableVisualStyles();
         Application.SetCompatibleTextRenderingDefault(false);
         ApplicationConfiguration.Initialize();

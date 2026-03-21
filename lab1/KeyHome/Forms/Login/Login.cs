@@ -59,6 +59,7 @@ public class LoginForm : Form
             };
 
             dataForm.Show();
+            codeTextBox.Text = "";
             this.Hide();
         }
         catch

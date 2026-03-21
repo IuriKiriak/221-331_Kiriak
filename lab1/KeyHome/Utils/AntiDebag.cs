@@ -1,5 +1,8 @@
 using System;
-using System.Threading;
+using System.Diagnostics;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 public static class AntiDebug
@@ -11,7 +14,6 @@ public static class AntiDebug
     {
         if (IsDebuggerPresent())
         {
-            
             MessageBox.Show(
                 "Обнаружен отладчик! Программа будет закрыта.",
                 "Предупреждение",
