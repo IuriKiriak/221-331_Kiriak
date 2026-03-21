@@ -1,7 +1,7 @@
 namespace FileHandler;
 
 
-// интерфейсы
+
 public interface IFileReader
 {
     string FileRead();
@@ -22,7 +22,7 @@ public interface IFileHandler
     void FileInfo();
 }
 
-// абстрактные классы
+
 public abstract class BaseFileHandler : IFileHandler
 {
     public string FullPath { get; set; }
@@ -63,9 +63,6 @@ public abstract class BaseFileWritter : IFileWritter
     public abstract void FileWritte(string fullPath);
 }
 
-// основные классы обработка файла
-
-// работа с файлом 
 public class CredentialJsonFileHandler : BaseFileHandler
 {
     private static CredentialJsonFileHandler? _instance = null!;
@@ -98,7 +95,7 @@ public class CredentialJsonFileHandler : BaseFileHandler
     }
 }
 
-// классы чтения записи
+
 public class FileReader : BaseFileReader
 {
     public FileReader(string fullPath) : base(fullPath)
@@ -125,5 +122,4 @@ public class FileWritter : BaseFileWritter
     }
 }
 
-// другое
 

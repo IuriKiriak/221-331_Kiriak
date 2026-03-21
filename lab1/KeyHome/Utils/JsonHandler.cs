@@ -3,7 +3,6 @@ using System.IO;
 
 namespace JsonHandler;
 
-// интерфейсы
 public interface ICredentialJsonHandler
 {
     IFileHandler File { get; set; }
@@ -14,7 +13,7 @@ public interface IParcerLogPas
     string Login { get; set; }
     string Password { get; set; }
 
-    Dictionary<string, string> ParsingLogPas(); // не придумал че в него идти должно 
+    Dictionary<string, string> ParsingLogPas(); 
     
 }
 
@@ -34,14 +33,14 @@ public abstract class BaseParcerLogPas : IParcerLogPas
     public string Login { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
 
-    protected BaseParcerLogPas() {} // по идеи отправляем сюда модель json
+    protected BaseParcerLogPas() {} 
 
     public abstract Dictionary<string, string> ParsingLogPas();
 }
 
 public abstract class ParcerLogPas : BaseParcerLogPas
 {
-    private ParcerLogPas() : base() {} // по идеи отправляем сюда модель json
+    private ParcerLogPas() : base() {} 
 
     public override Dictionary<string, string> ParsingLogPas()
     {

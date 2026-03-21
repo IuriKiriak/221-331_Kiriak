@@ -11,7 +11,7 @@ public static class AntiDebug
     {
         if (IsDebuggerPresent())
         {
-            // Можно вывести предупреждение пользователю
+            
             MessageBox.Show(
                 "Обнаружен отладчик! Программа будет закрыта.",
                 "Предупреждение",
@@ -19,8 +19,8 @@ public static class AntiDebug
                 MessageBoxIcon.Warning
             );
 
-            // Завершение всего процесса
-            Environment.Exit(1); // программа полностью завершится
+
+            Environment.Exit(1);
         }
     }
 }
